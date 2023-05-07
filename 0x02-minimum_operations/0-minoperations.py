@@ -2,7 +2,7 @@
 
 """interview preparations - minimum operations"""
 
-def min_Operations(n):
+def minOperations(n):
     """Returns the smallests number of operations (Copy All and Paste)
     needed to result in exactly n H
     characters in this file.
