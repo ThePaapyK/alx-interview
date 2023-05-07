@@ -2,6 +2,7 @@
 
 """interview preparations - minimum operations"""
 
+
 def minOperations(n):
     """Returns the smallests number of operations (Copy All and Paste)
     needed to result in exactly n H
@@ -44,4 +45,3 @@ def minOperations(n):
         return i
     else:
         return 0
-
