@@ -24,7 +24,8 @@ def canUnlockAll(boxes):
     while keys:
         # Pop a key from the set of keys
         key = keys.pop()
-        # If the key opens a locked box, add the keys from the unlocked box to the set of keys
+        # If the key opens a locked box,
+        # add the keys from the unlocked box to the set of keys
         if key in locked_boxes:
             keys.update(boxes[key])
             # Remove the opened box from the set of locked boxes
