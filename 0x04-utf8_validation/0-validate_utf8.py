@@ -14,22 +14,23 @@ def validUTF8(data):
     """
     num_bytes = 0
 
-    for byte in data:
+    for num in data:
+        binary = bin(num)[2:].zfill(8)  # Convert decimal to 8-bit binary string
         if num_bytes == 0:
-            if (byte >> 7) == 0b0:
+            if binary[0] == '0':
                 # Single-byte character
                 continue
-            elif (byte >> 5) == 0b110:
+            elif binary[:3] == '110':
                 num_bytes = 1
-            elif (byte >> 4) == 0b1110:
+            elif binary[:4] == '1110':
                 num_bytes = 2
-            elif (byte >> 3) == 0b11110:
+            elif binary[:5] == '11110':
                 num_bytes = 3
             else:
                 # Invalid first byte
                 return False
         else:
-            if (byte >> 6) != 0b10:
+            if binary[:2] != '10':
                 # Invalid continuation byte
                 return False
             num_bytes -= 1
