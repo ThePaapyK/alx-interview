@@ -36,4 +36,3 @@ def validUTF8(data):
 
     # Check if there are any unfinished characters
     return num_bytes == 0
-
