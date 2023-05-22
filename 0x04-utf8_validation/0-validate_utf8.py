@@ -15,7 +15,6 @@ def validUTF8(data):
     num_bytes = 0
 
     for byte in data:
-        # Check if the current byte is a continuation byte
         if num_bytes == 0:
             if (byte >> 7) == 0b0:
                 # Single-byte character
@@ -37,3 +36,4 @@ def validUTF8(data):
 
     # Check if there are any unfinished characters
     return num_bytes == 0
+
