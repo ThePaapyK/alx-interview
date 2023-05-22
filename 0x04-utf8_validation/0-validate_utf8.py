@@ -4,7 +4,7 @@
 
 def validUTF8(data):
     """
-    This method determines if a given data set 
+    This method determines if a given data set
     represents a valid UTF-8 encoding
 
     Arguments:
@@ -17,13 +17,16 @@ def validUTF8(data):
     for byte in data:
         # Check if the current byte is a continuation byte
         if num_bytes == 0:
-            if (byte >> 5) == 0b110:
+            if (byte >> 7) == 0b0:
+                # Single-byte character
+                continue
+            elif (byte >> 5) == 0b110:
                 num_bytes = 1
             elif (byte >> 4) == 0b1110:
                 num_bytes = 2
             elif (byte >> 3) == 0b11110:
                 num_bytes = 3
-            elif (byte >> 7):
+            else:
                 # Invalid first byte
                 return False
         else:
@@ -34,4 +37,3 @@ def validUTF8(data):
 
     # Check if there are any unfinished characters
     return num_bytes == 0
-
