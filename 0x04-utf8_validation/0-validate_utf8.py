@@ -15,7 +15,7 @@ def validUTF8(data):
     num_bytes = 0
 
     for num in data:
-        binary = bin(num)[2:].zfill(8) #Convert decimal to 8-bit binary string
+        binary = bin(num)[2:].zfill(8)  #Convert decimal to 8-bit binary string
         if num_bytes == 0:
             if binary[0] == '0':
                 # Single-byte character
