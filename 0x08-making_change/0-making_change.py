@@ -26,4 +26,3 @@ def makeChange(coins, total):
         return -1  # The total amount cannot be met by any number of coins
     else:
         return dp[total]
-
