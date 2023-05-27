@@ -3,11 +3,11 @@
 
 
 def island_perimeter(grid):
-"""calculates perimeter of island described in grid
+    """calculates perimeter of island described in grid
     Arguments:
         grid (int) : list of lists
     Return: perimeter of island
-"""
+    """
     rows = len(grid)
     cols = len(grid[0])
 
