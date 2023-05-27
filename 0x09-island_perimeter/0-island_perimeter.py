@@ -1,12 +1,12 @@
 #!/usr/bin/python3
-
 """Island perimeter code"""
+
 
 def island_perimeter(grid):
 """calculates perimeter of island described in grid
-Arguments:
-grid (int) : list of lists
-Return: perimeter of island
+    Arguments:
+        grid (int) : list of lists
+    Return: perimeter of island
 """
     rows = len(grid)
     cols = len(grid[0])
@@ -16,13 +16,12 @@ Return: perimeter of island
     for i in range(rows):
         for j in range(cols):
             if grid[i][j] == 1:
-                perimeter += 4  # Each land cell contributes 4 to the perimeter
+                perimeter += 4
 
                 # Check adjacent cells to subtract shared edges
                 if i > 0 and grid[i - 1][j] == 1:
-                    perimeter -= 2  # Subtract 2 for each shared edge between adjacent land cells
+                    perimeter -= 2
                 if j > 0 and grid[i][j - 1] == 1:
-                    perimeter -= 2  # Subtract 2 for each shared edge between adjacent land cells
+                    perimeter -= 2
 
     return perimeter
-
