@@ -1,13 +1,7 @@
 #!/usr/bin/python3
-"""The N queens puzzle """
-
-
 import sys
 
 def is_safe(board, row, col, N):
-    """
-    implements the N queens puzzle
-    """
     # Check if there is a queen in the same column
     for i in range(row):
         if board[i] == col:
@@ -57,6 +51,6 @@ if __name__ == '__main__':
     solutions = solve_nqueens(N)
 
     for solution in solutions:
-        for row in solution:
-            print([i, row] for i in range(N))
+        for row in range(N):
+            print([row, solution[row]])
         print()
