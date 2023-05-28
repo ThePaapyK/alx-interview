@@ -1,39 +1,46 @@
 #!/usr/bin/python3
 """log parsing"""
 
-
 import sys
+from collections import defaultdict
 
-total_file_size = 0
-lines_by_status_code = {}
+
+def print_stats(status_dict, total_size):
+    """Prints information"""
+    print(f"File size: {total_size}")
+    for status_code, count in sorted(status_dict.items()):
+        if count != 0:
+            print(f"{status_code}: {count}")
+
+status_codes = {"200": 0, "301": 0, "400": 0, "401": 0, "403": 0,
+                "404": 0, "405": 0, "500": 0}
+
+count = 0
+total_size = 0
 
 try:
-    for i, line in enumerate(sys.stdin, start=1):
-        if i % 10 == 0:
-            print("File size:", total_file_size)
-            for status_code in sorted(lines_by_status_code):
-                print(f"{status_code}: {lines_by_status_code[status_code]}")
-            print()
+    for line in sys.stdin:
+        if count != 0 and count % 10 == 0:
+            print_stats(status_codes, total_size)
 
-        line = line.strip()
         parts = line.split()
-        if len(parts) != 7:
-            continue
-
-        _, _, _, _, status_code, file_size = parts
+        count += 1
 
         try:
-            status_code = int(status_code)
-            file_size = int(file_size)
+            file_size = int(parts[-1])
+            total_size += file_size
         except ValueError:
-            continue
+            pass
 
-        total_file_size += file_size
-        lines_by_status_code[status_code] = lines_by_status_code.get(status_code, 0) + 1
+        try:
+            status_code = parts[-2]
+            if status_code in status_codes:
+                status_codes[status_code] += 1
+        except IndexError:
+            pass
+
+    print_stats(status_codes, total_size)
 
 except KeyboardInterrupt:
-    pass
-
-print("File size:", total_file_size)
-for status_code in sorted(lines_by_status_code):
-    print(f"{status_code}: {lines_by_status_code[status_code]}")
+    print_stats(status_codes, total_size)
+    raise
