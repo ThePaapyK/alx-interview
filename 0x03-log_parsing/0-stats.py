@@ -1,44 +1,37 @@
 #!/usr/bin/python3
 """log parsing"""
 import sys
-from collections import defaultdict
 
-# Initialize variables
-total_size = 0
-status_codes = defaultdict(int)
-line_count = 0
+total_file_size = 0
+lines_by_status_code = {}
 
 try:
-    # Read input lines from stdin
-    for line in sys.stdin:
-        line = line.strip()
-        # Check if the line matches the expected input format
-        if line.startswith("[") and line.endswith("]"):
-            parts = line.split()
-            ip_address = parts[0]
-            status_code = parts[-2]
-            file_size = parts[-1]
-
-            # Update metrics
-            total_size += int(file_size)
-            status_codes[status_code] += 1
-            line_count += 1
-
-        # Check if we reached 10 lines or a keyboard interruption (CTRL + C)
-        if line_count == 10:
-            # Print metrics
-            print("Total file size:", total_size)
-            for code in sorted(status_codes.keys()):
-                print(code + ":", status_codes[code])
+    for i, line in enumerate(sys.stdin, start=1):
+        if i % 10 == 0:
+            print("File size:", total_file_size)
+            for status_code in sorted(lines_by_status_code):
+                print(f"{status_code}: {lines_by_status_code[status_code]}")
             print()
 
-            # Reset variables
-            status_codes = defaultdict(int)
-            line_count = 0
+        line = line.strip()
+        parts = line.split()
+        if len(parts) != 7:
+            continue
+
+        _, _, _, _, status_code, file_size = parts
+
+        try:
+            status_code = int(status_code)
+            file_size = int(file_size)
+        except ValueError:
+            continue
+
+        total_file_size += file_size
+        lines_by_status_code[status_code] = lines_by_status_code.get(status_code, 0) + 1
 
 except KeyboardInterrupt:
-    # If interrupted, print the metrics for the processed lines
-    print("Total file size:", total_size)
-    for code in sorted(status_codes.keys()):
-        print(code + ":", status_codes[code])
+    pass
 
+print("File size:", total_file_size)
+for status_code in sorted(lines_by_status_code):
+    print(f"{status_code}: {lines_by_status_code[status_code]}")
