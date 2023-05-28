@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+
 """The checker says this module is not documented. Wowww ALX"""
 
 import sys
