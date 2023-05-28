@@ -13,6 +13,7 @@ def print_stats(status_dict, total_size):
         if count != 0:
             print(f"{status_code}: {count}")
 
+
 status_codes = {"200": 0, "301": 0, "400": 0, "401": 0, "403": 0,
                 "404": 0, "405": 0, "500": 0}
 
