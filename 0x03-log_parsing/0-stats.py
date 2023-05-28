@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 """log parsing"""
+
+
 import sys
 
 total_file_size = 0
