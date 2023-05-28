@@ -1,13 +1,48 @@
 #!/usr/bin/python3
 
-"""The checker says this module is not documented. Wowww ALX"""
+"""
+This module provides functionality to compute and
+print metrics based on input data.
 
+It reads input from stdin line by line,
+computes statistics, and prints the results.
+
+Input format:
+<IP Address> - [<date>] "GET /projects/260 HTTP/1.1" <status code> <file size>
+(if the format is not this one, the line must be skipped)
+
+After every 10 lines and/or a keyboard interruption (CTRL + C),
+it prints the following statistics:
+- Total file size: the sum of all previous file sizes
+- Number of lines by status code: counts the occurrences of each status code
+
+Possible status codes: 200, 301, 400, 401, 403, 404, 405, and 500
+
+The module uses the `print_stats()` function to print the statistics and
+a dictionary `status_codes` to keep track of the counts for each status code.
+
+Usage:
+    $ python3 <module_name.py>
+
+Author: Paa Kojo Effah Annan
+"""
 import sys
 from collections import defaultdict
 
 
 def print_stats(status_dict, total_size):
-    """Prints information"""
+    """Prints the computed statistics.
+
+    Args:
+        status_dict (dict): Dictionary containing
+        the count of lines per status code.
+
+        total_size (int): Total file size computed from the input.
+
+     Prints:
+        File size: Total size of all files processed.
+        <status code>: Number of lines with the respective status code.
+    """
     print(f"File size: {total_size}")
     for status_code, count in sorted(status_dict.items()):
         if count != 0:
