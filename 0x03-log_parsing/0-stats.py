@@ -40,13 +40,13 @@ try:
 
         try:
             total_size += int(line_split[-1])
-        except ValueError:
+        except:
             pass
 
         try:
             if line_split[-2] in metrics:
                 metrics[line_split[-2]] += 1
-        except IndexError:
+        except:
             pass
 
     print_metrics(metrics, total_size)
