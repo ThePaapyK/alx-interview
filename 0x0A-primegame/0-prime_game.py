@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """
 Module: Game of Choosing Prime Numbers
 """
