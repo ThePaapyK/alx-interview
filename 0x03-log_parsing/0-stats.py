@@ -73,7 +73,7 @@ def process_input():
                 lines = []
 
     finally:
-        total_size, code_count = process_lines(lines)  # process remaining lines
+        total_size, code_count = process_lines(lines)
         print_stats(code_count, total_size)  # print final stats
 
 
