@@ -3,9 +3,11 @@
 
 import sys
 
+
 def is_safe(i, j, a, b, c):
     """Check if placing a queen at position (i, j) is safe"""
     return j not in a and i + j not in b and i - j not in c
+
 
 def queens(n, i=0, a=[], b=[], c=[]):
     """Generator function to find all solutions to the N-Queens problem"""
@@ -15,6 +17,7 @@ def queens(n, i=0, a=[], b=[], c=[]):
         for j in range(n):
             if is_safe(i, j, a, b, c):
                 yield from queens(n, i + 1, a + [j], b + [i + j], c + [i - j])
+
 
 def solve(n):
     """Solve the N-Queens problem for a given board size"""
