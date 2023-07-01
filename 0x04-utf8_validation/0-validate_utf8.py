@@ -14,26 +14,29 @@ def validUTF8(data):
     """
     num_bytes = 0
 
-    for num in data:
-        binary = bin(num)[2:].zfill(8)  # Convert decimal to 8-bit binary str
+    for byte in data:
         if num_bytes == 0:
-            if binary[0] == '0':
-                # Single-byte character
+            if byte >> 7 == 0b0:
                 continue
-            elif binary[:3] == '110':
-                num_bytes = 1
-            elif binary[:4] == '1110':
-                num_bytes = 2
-            elif binary[:5] == '11110':
-                num_bytes = 3
-            else:
-                # Invalid first byte
-                return False
-        else:
-            if binary[:2] != '10':
-                # Invalid continuation byte
-                return False
-            num_bytes -= 1
 
-    # Check if there are any unfinished characters
+            num_bytes = num_bytes_from_mask(byte)
+
+            if num_bytes == 0 or num_bytes > 4:
+                return False
+
+        else:
+            if byte >> 6 != 0b10:
+                return False
+
+        num_bytes -= 1
+
     return num_bytes == 0
+
+
+def num_bytes_from_mask(byte):
+    """Get the number of bytes needed to represent a character based on the first byte mask"""
+    masks = [0b1111110, 0b111110, 0b11110, 0b1110]
+    for i, mask in enumerate(masks):
+        if byte >> (7 - i) == mask:
+            return i + 1
+    return 0
