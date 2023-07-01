@@ -1,56 +1,80 @@
 #!/usr/bin/python3
 
-"""Script that reads stdin line by line and computes metrics"""
-
 import sys
 
 
-def print_metrics(metrics_dict, total_size):
+def print_stats(code_count, total_size):
     """
-    Prints the metrics information.
-
+    Prints statistics about HTTP status codes and total file size.
     Args:
-        metrics_dict (dict): A dictionary containing
-        the metrics as key-value pairs.
-        total_size (int): The total file size.
-
+        code_count: a dictionary of status codes and their counts
+        total_size: the total size of the file
     Returns:
         None
     """
-    print("File size: {:d}".format(total_size))
-    for key in sorted(metrics_dict.keys()):
-        if metrics_dict[key] != 0:
-            print("{}: {:d}".format(key, metrics_dict[key]))
+
+    print("File size:", total_size)
+    for code, count in sorted(code_count.items()):
+        if count != 0:
+            print(code + ":", count)
 
 
-metrics = {"200": 0, "301": 0, "400": 0, "401": 0, "403": 0,
-           "404": 0, "405": 0, "500": 0}
+def process_lines(lines):
+    """
+    Process the lines from standard input and update statistics.
+    Args:
+        lines: a list of lines from standard input
+    Returns:
+        total_size: updated total file size
+        code_count: updated dictionary of status codes and their counts
+    """
+    total_size = 0
+    code_count = {"200": 0,
+                  "301": 0,
+                  "400": 0,
+                  "401": 0,
+                  "403": 0,
+                  "404": 0,
+                  "405": 0,
+                  "500": 0}
 
-line_count = 0
-total_size = 0
+    for line in lines:
+        parsed_line = line.split()  # split line into fields
+        parsed_line = parsed_line[::-1]  # reverse the order of fields
 
-try:
-    for line in sys.stdin:
-        line_count += 1
+        if len(parsed_line) > 2:
+            total_size += int(parsed_line[0])  # add file size to total
+            code = parsed_line[1]  # get status code
 
-        if line_count != 0 and line_count % 10 == 0:
-            print_metrics(metrics, total_size)
+            if code in code_count:
+                code_count[code] += 1  # increment count for status code
 
-        line_split = line.split()
+    return total_size, code_count
 
-        try:
-            total_size += int(line_split[-1])
-        except:
-            pass
 
-        try:
-            if line_split[-2] in metrics:
-                metrics[line_split[-2]] += 1
-        except:
-            pass
+def process_input():
+    """
+    Read lines from standard input and process them in batches.
+    """
+    counter = 0
+    batch_size = 10
+    lines = []
 
-    print_metrics(metrics, total_size)
+    try:
+        for line in sys.stdin:
+            counter += 1
+            lines.append(line.strip())
 
-except KeyboardInterrupt:
-    print_metrics(metrics, total_size)
-    raise
+            if counter == batch_size:
+                total_size, code_count = process_lines(lines)  # process batch
+                print_stats(code_count, total_size)  # print stats for batch
+                counter = 0
+                lines = []
+
+    finally:
+        total_size, code_count = process_lines(lines)  # process remaining lines
+        print_stats(code_count, total_size)  # print final stats
+
+
+if __name__ == '__main__':
+    process_input()
